@@ -59,6 +59,26 @@ public class Inner {
             sex2=Inner.sex;
             System.out.println(sex2+testName);
         }
+
+    }
+    //匿名内部类的实现方法
+    public void anonymousClass(){
+        //匿名内部类（父类为抽象类）
+        new Animal(){
+            @Override
+            public void cry(){
+                System.out.println("匿名内部类");
+            }
+        }.cry();
+    }
+    public void anonymousClass2(){
+        //父类为普通类
+        Cat cat =new Cat(){
+          public void normalFunc(){
+              System.out.println("重写父类方法");
+          }
+        };
+        cat.normalFunc();
     }
     public static void main(String args[]){
         Inner inner = new Inner();
@@ -76,5 +96,8 @@ public class Inner {
         inner.func();
         //调用静态内部类
         Inner.TestStatic.func();
-        }
+        //调用匿名内部类
+        inner.anonymousClass();
+        inner.anonymousClass2();
+    }
 }

@@ -8,5 +8,9 @@ public class Cat extends Animal {
     @Override
     public void cry(){
         System.out.println("This s a cat");
+
+    }
+    public void normalFunc(){
+        System.out.println("普通方法");
     }
 }

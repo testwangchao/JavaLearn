@@ -7,7 +7,6 @@ import AbstractClass.Animal;
  */
 public class TestMain extends Animal{
     //接口
-    @Override
     public void func() {
         System.out.println();
     }
@@ -18,7 +17,7 @@ public class TestMain extends Animal{
     }
     public static void main(String args[]){
         Animal test = new TestMain();
-        test.func();
+        //test.func();
     }
 
 
