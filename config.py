@@ -13,3 +13,5 @@ DB_URI = 'mysql+pymysql://{username}:{password}@{host}:{port}/{db}?charset-utf8'
                                                                                         db=DB)
 SQLALCHEMY_DATABASE_URI = DB_URI
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+CMS_USER_ID = 'wangchao'
