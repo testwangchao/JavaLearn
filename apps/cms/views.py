@@ -5,6 +5,7 @@ from flask import request
 from flask import session
 from flask import redirect
 from flask import url_for
+
 from .forms import LoginForm
 from .models import CmsUser
 from .decorators import login_required
@@ -16,7 +17,16 @@ bp = Blueprint("cms", __name__, url_prefix="/cms")
 @bp.route('/')
 @login_required
 def index():
-    return "cms"
+    # g.cms_user
+    return render_template('cms/cms_index.html')
+
+
+@bp.route('/logout/')
+@login_required
+def log_out():
+    del session[CMS_USER_ID]
+    print(session)
+    return redirect(url_for('cms.login'))
 
 
 class LoginView(views.MethodView):
@@ -35,7 +45,7 @@ class LoginView(views.MethodView):
             remember = form.remember.data
             user = CmsUser.query.filter_by(email=email).first()
             if user and user.check_password(password):
-                session['user_id'] = CMS_USER_ID
+                session[CMS_USER_ID] = user.id
                 if remember:
                     # 如果设置session.permanent=True,那么过期时间是31天
                     session.permanent = True
