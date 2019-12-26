@@ -1,0 +1,27 @@
+{% extends 'cms/cms_base.html' %}
+{% from 'common/_macros.html' import resetpwd %}
+{% block title %}修改密码{% endblock %}
+
+{% block page_title %}
+    {{ self.title() }}
+{% endblock %}
+
+{% block head %}
+    <style>
+        .form-container {
+            width: 300px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block main_content %}
+    <form action="" method="post">
+        <div class="form-container">
+            {{ resetpwd("旧密码","oldpwd","请输入原始密码") }}
+            {{ resetpwd("新密码","newpwd","输入新密码") }}
+            {{ resetpwd("确认密码","newpwd2","确认新密码") }}
+            <button type="submit" class="btn btn-primary">立即修改</button>
+        </div>
+    </form>
+{% endblock %}

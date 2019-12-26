@@ -5,6 +5,7 @@ from flask import request
 from flask import session
 from flask import redirect
 from flask import url_for
+from flask import Markup
 
 from .forms import LoginForm
 from .models import CmsUser
@@ -25,8 +26,13 @@ def index():
 @login_required
 def log_out():
     del session[CMS_USER_ID]
-    print(session)
     return redirect(url_for('cms.login'))
+
+
+@bp.route('/profile/')
+@login_required
+def profile():
+    return render_template('cms/cms_profile.html')
 
 
 class LoginView(views.MethodView):
@@ -58,4 +64,14 @@ class LoginView(views.MethodView):
             return self.__render(error_msg=msg)
 
 
+class ResetPwdView(views.MethodView):
+    decorators = [login_required]
+    def get(self):
+        return render_template('cms/cms_resetpwd.html')
+
+    def post(self):
+        pass
+
+
 bp.add_url_rule('/login/', view_func=LoginView.as_view('login'))
+bp.add_url_rule('/resetpwd/', view_func=ResetPwdView.as_view('resetpwd'))
