@@ -4,9 +4,17 @@
 
 {% macro resetpwd(text,name,tip) %}
     <div class="form-group">
-            <div class="input-group">
-            <span class="input-group-addon">{{text}}</span>
-            <input type="password" class="form-control" name="{{name}}" placeholder="{{ tip }}">
+        <div class="input-group">
+            <span class="input-group-addon">{{ text }}</span>
+            <input type="password" class="form-control" name="{{ name }}" placeholder="{{ tip }}">
         </div>
-        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_err_msg(error_msg) %}
+    {% if error_msg %}
+        <p style="text-align: center" class="text-danger">
+            {{ error_msg }}
+        </p>
+    {% endif %}
 {% endmacro %}

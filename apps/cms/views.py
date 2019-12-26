@@ -1,13 +1,15 @@
 from flask.blueprints import Blueprint
-from flask import views
+from flask import views, g
 from flask import render_template
 from flask import request
 from flask import session
 from flask import redirect
 from flask import url_for
-from flask import Markup
+from flask import jsonify
+from exts import db
 
 from .forms import LoginForm
+from .forms import ResetPwdForm
 from .models import CmsUser
 from .decorators import login_required
 from config import CMS_USER_ID
@@ -60,18 +62,37 @@ class LoginView(views.MethodView):
                 return self.__render(error_msg="邮箱或密码错误")
 
         else:
-            msg = form.errors.popitem()[1][0]
+            msg = form.get_error()
             return self.__render(error_msg=msg)
 
 
 class ResetPwdView(views.MethodView):
     decorators = [login_required]
+
+    def __render(self, error_msg=None):
+        return render_template("cms/cms_resetpwd.html", error_msg=error_msg)
+
     def get(self):
-        return render_template('cms/cms_resetpwd.html')
+        return self.__render()
 
     def post(self):
-        pass
+        form = ResetPwdForm(request.form)
+        if form.validate():
+            oldpwd = form.oldpwd.data
+            newpwd = form.newpwd.data
+            user = g.cms_user
+            if user.check_password(oldpwd):
+                user.password = newpwd
+                # db.session.add(user)
+                db.session.commit()
+                # {"code": 200, "msg": ""success}
+                return jsonify({"code": 200, "msg": "success"})
+            else:
+                return jsonify({"code": 400, "msg": "旧密码错误！"})
+        else:
+            msg = form.get_error()
+            return jsonify({"code": 400, "msg": msg})
 
 
 bp.add_url_rule('/login/', view_func=LoginView.as_view('login'))
-bp.add_url_rule('/resetpwd/', view_func=ResetPwdView.as_view('resetpwd'))
+bp.add_url_rule('/resetpwd/', view_func=ResetPwdView.as_view('resetpwd'), strict_slashes=False)
