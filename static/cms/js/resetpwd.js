@@ -22,10 +22,20 @@ $(function () {
                 'newpwd2': newpwd2
             },
             'success': function (data) {
-                console.log(data);
+                // console.log(data);
+                if (data['code'] === 200) {
+                    xtalert.alertSuccessToast("恭喜！密码修改成功");
+                    oldpwdE.val("");
+                    newpwdE.val("");
+                    newpwdE2.val("")
+                } else {
+                    var msg = data['msg'];
+                    xtalert.alertInfo(msg);
+                }
             },
             'fail': function (error) {
-                console.log(error);
+                // console.log(error);
+                xtalert.alertNetworkError()
             }
         });
     });

@@ -20,3 +20,9 @@ class ResetPwdForm(BaseForm):
     newpwd2 = StringField(validators=[EqualTo("newpwd")])
 
 
+class ResetEmailForm(BaseForm):
+    newemail = StringField(validators=[Email(message="请输入正确的邮箱格式"), InputRequired(message="请输入邮箱")])
+    emailcaptcha = StringField(validators=[Length(6, 20, message='请输入正确格式的验证码')])
+
+
+

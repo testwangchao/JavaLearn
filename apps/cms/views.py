@@ -1,3 +1,7 @@
+import random
+import string
+import uuid
+from flask_mail import Message
 from flask.blueprints import Blueprint
 from flask import views, g
 from flask import render_template
@@ -10,9 +14,13 @@ from exts import db
 
 from .forms import LoginForm
 from .forms import ResetPwdForm
+from .forms import ResetEmailForm
 from .models import CmsUser
 from .decorators import login_required
 from config import CMS_USER_ID
+from utils.restful import *
+from exts import mail
+from utils import cache
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -37,6 +45,37 @@ def profile():
     return render_template('cms/cms_profile.html')
 
 
+@bp.route('/email/')
+@login_required
+def send_email():
+    message = Message("验证码",recipients=['15201403874@163.com'],body="测试")
+    try:
+        mail.send(message)
+    except Exception as e:
+        server_error(msg=e)
+    return "邮件发送成功"
+
+
+@bp.route('/email_captcha/')
+def email_captcha():
+    email = request.args.get("email")
+    if not email:
+        return params_error('邮箱地址为空')
+    # 生成验证码
+    source = list(string.ascii_letters)
+    source.extend([str(i) for i in range(0, 10)])
+    captcha = "".join(random.sample(source, 6))
+
+    # 发送
+    message = Message(subject="验证码", recipients=[email], body="您的验证码是：%s" % captcha)
+    try:
+        mail.send(message)
+    except Exception as e:
+        server_error(msg=e)
+    cache.set(email, captcha)
+    return success()
+
+
 class LoginView(views.MethodView):
 
     def __render(self, error_msg=None):
@@ -59,11 +98,11 @@ class LoginView(views.MethodView):
                     session.permanent = True
                 return redirect(url_for('cms.index'))
             else:
-                return self.__render(error_msg="邮箱或密码错误")
+                return params_error("邮箱或密码错误")
 
         else:
             msg = form.get_error()
-            return self.__render(error_msg=msg)
+            return params_error(msg)
 
 
 class ResetPwdView(views.MethodView):
@@ -86,13 +125,38 @@ class ResetPwdView(views.MethodView):
                 # db.session.add(user)
                 db.session.commit()
                 # {"code": 200, "msg": ""success}
-                return jsonify({"code": 200, "msg": "success"})
+                # return jsonify({"code": 200, "msg": "success"})
+                return success()
             else:
-                return jsonify({"code": 400, "msg": "旧密码错误！"})
+                return params_error("旧密码错误！")
         else:
             msg = form.get_error()
-            return jsonify({"code": 400, "msg": msg})
+            return params_error(msg=msg)
+
+
+class ResetEmailView(views.MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        return render_template('cms/cms_resetemail.html')
+
+    def post(self):
+        form = ResetEmailForm(request.form)
+        if form.validate():
+            user = g.cms_user
+            new_eamil = form.newemail.data
+            email_captcha = form.emailcaptcha.data
+            if email_captcha == cache.get(new_eamil):
+                user.email = new_eamil
+                db.session.commit()
+                return success()
+            else:
+                return params_error(msg="验证码错误")
+        else:
+            msg = form.get_error()
+            return params_error(msg=msg)
 
 
 bp.add_url_rule('/login/', view_func=LoginView.as_view('login'))
-bp.add_url_rule('/resetpwd/', view_func=ResetPwdView.as_view('resetpwd'), strict_slashes=False)
+bp.add_url_rule('/resetpwd/', view_func=ResetPwdView.as_view('resetpwd'))
+bp.add_url_rule('/resetemail/', view_func=ResetEmailView.as_view('resetemail'))
