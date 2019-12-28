@@ -35,7 +35,7 @@ class CMSRole(db.Model):
     name = db.Column(db.String(50), nullable=False)
     desc = db.Column(db.String(200), nullable=True)
     create_time = db.Column(db.DateTime, default=datetime.now)
-    permissons = db.Column(db.Integer, default=CMSPermission.VISITOR)
+    permissions = db.Column(db.Integer, default=CMSPermission.VISITOR)
 
     users = db.relationship('CmsUser', secondary=cms_role_user, backref='roles')
 
@@ -67,7 +67,25 @@ class CmsUser(db.Model):
         result = check_password_hash(self.password, raw_password)
         return result
 
+    @property
+    def permissons(self):
+        if not self.roles:
+            return 0
+        # 获取用户的所有权限
+        all_permissions = 0
+        for role in self.roles:
+            permissions = role.permissions
+            all_permissions |= permissions
+        return all_permissions
+
+    def has_permission(self, permission):
+        # 判断用户是否具有某权限
+        return permission & self.permissons == permission
+
+    @property
+    def is_developer(self):
+        return self.has_permission(CMSPermission.ALL_PERMISSION)
 
 
-
-
+if __name__ == '__main__':
+    print(type(CMSPermission.VISITOR))

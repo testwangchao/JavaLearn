@@ -22,13 +22,25 @@
         </tr>
         <tr>
             <td>角色：</td>
-            <td>{{ user_data.role }}</td>
+            <td>
+                {% for role in user_data.roles %}
+                    {{ role.name }}
+                    {% if not loop.last %},{% endif %}
+                {% endfor %}
+            </td>
         </tr>
         <tr>
             <td>权限：</td>
-            <td>{{ user_data.permissions }}</td>
+            <td>
+                {% for role  in user_data.roles %}
+                    {{ role.desc }}
+                    {% if not loop.last %}/{% endif %}
+                {% endfor %}
+                
+                
+            </td>
         </tr>
-    <tr>
+        <tr>
             <td>加入时间：</td>
             <td>{{ user_data.join_time }}</td>
         </tr>

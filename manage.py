@@ -30,24 +30,49 @@ def create_cms_user(username, password, email):
 def create_role():
     # 1. 访问者
     visitor = CmsRole(name="访问者", desc="只能查询相关数据，不能修改。")
-    visitor.permissons = CmsPermission.VISITOR
+    visitor.permissions = CmsPermission.VISITOR
 
     # 2. 运营 (可以修改个人信息，管理帖子、管理评论、管理前台用户的权限)
     operator = CmsRole(name="运营", desc="管理帖子、管理评论、管理前台用户")
-    operator.permissons = CmsPermission.VISITOR | CmsPermission.POSTER | CmsPermission.CMSUSER \
+    operator.permissions = CmsPermission.VISITOR | CmsPermission.POSTER | CmsPermission.CMSUSER \
                           | CmsPermission.COMMENTER |CmsPermission.FRONTER
 
     # 3. 管理员
     admin = CmsRole(name="管理员", desc="拥有本系统所有权限。")
-    admin.permissons = CmsPermission.VISITOR | CmsPermission.POSTER | CmsPermission.CMSUSER \
+    admin.permissions = CmsPermission.VISITOR | CmsPermission.POSTER | CmsPermission.CMSUSER \
                        | CmsPermission.COMMENTER | CmsPermission.FRONTER | CmsPermission.BOARDER
 
     # 4.开发者
     developer = CmsRole(name="开发者", desc="开发人员专用角色")
-    developer.permissons = CmsPermission.ALL_PERMISSION
+    developer.permissions = CmsPermission.ALL_PERMISSION
 
     db.session.add_all([visitor, operator, admin, developer])
     db.session.commit()
+
+
+@manager.command
+def test_permission():
+    user = CmsUser.query.first()
+    if user.is_developer:
+        print("该用户开发者的权限")
+    else:
+        print("该用户没有开发者的权限")
+
+
+@manager.option('-e', '--email', dest="email")
+@manager.option('-n', '--name', dest="name")
+def add_user_to_role(email, name):
+    user = CmsUser.query.filter_by(email=email).first()
+    if user:
+        role = CmsRole.query.filter_by(name=name).first()
+        if role:
+            role.users.append(user)
+            db.session.commit()
+            print("用户添加到角色成功")
+        else:
+            print("没有这个角色")
+    else:
+        print("该用户不存在")
 
 
 if __name__ == '__main__':
