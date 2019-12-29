@@ -1,6 +1,5 @@
 import random
 import string
-import uuid
 from flask_mail import Message
 from flask.blueprints import Blueprint
 from flask import views, g
@@ -9,18 +8,20 @@ from flask import request
 from flask import session
 from flask import redirect
 from flask import url_for
-from flask import jsonify
-from exts import db
+from flask import g
 
+from exts import db
 from .forms import LoginForm
 from .forms import ResetPwdForm
 from .forms import ResetEmailForm
 from .models import CmsUser
 from .decorators import login_required
+from .decorators import permission_required
 from config import CMS_USER_ID
 from utils.restful import *
 from exts import mail
 from utils import cache
+from .models import CMSPermission
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -54,6 +55,48 @@ def send_email():
     except Exception as e:
         server_error(msg=e)
     return "邮件发送成功"
+
+
+@bp.route('/posts/')
+@login_required
+@permission_required(CMSPermission.POSTER)
+def posts():
+    return render_template('cms/cms_posts.html')
+
+
+@bp.route('/comments/')
+@login_required
+@permission_required(CMSPermission.COMMENTER)
+def comments():
+    return render_template('cms/cms_comments.html')
+
+
+@bp.route('/boards/')
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def boards():
+    return render_template('cms/cms_boards.html')
+
+
+@bp.route('/fusers/')
+@login_required
+@permission_required(CMSPermission.FRONTER)
+def fusers():
+    return render_template('cms/cms_fusers.html')
+
+
+@bp.route('/cusers/')
+@login_required
+@permission_required(CMSPermission.CMSUSER)
+def cusers():
+    return render_template('cms/cms_cusers.html')
+
+
+@bp.route('/croles/')
+@login_required
+@permission_required(CMSPermission.ALL_PERMISSION)
+def croles():
+    return render_template('cms/cms_croles.html')
 
 
 @bp.route('/email_captcha/')
