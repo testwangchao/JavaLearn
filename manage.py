@@ -3,10 +3,12 @@ from flask_migrate import Migrate, MigrateCommand
 from bbs import create_app
 from exts import db
 from apps.cms import models as cms_module
+from apps.front import model as front_models
 
 CmsUser = cms_module.CmsUser
 CmsRole = cms_module.CMSRole
 CmsPermission = cms_module.CMSPermission
+FrontUser = front_models.FrontUser
 
 app = create_app()
 
@@ -73,6 +75,16 @@ def add_user_to_role(email, name):
             print("没有这个角色")
     else:
         print("该用户不存在")
+
+
+@manager.option('-t', '--telephone',dest="telephone")
+@manager.option('-u', '--username',dest="username")
+@manager.option('-p', '--password',dest="password")
+def create_front_user(username, password, telephone):
+    user = FrontUser(username=username, password=password, telephone=telephone)
+    db.session.add(user)
+    db.session.commit()
+
 
 
 if __name__ == '__main__':
