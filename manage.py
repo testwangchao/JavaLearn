@@ -3,12 +3,20 @@ from flask_migrate import Migrate, MigrateCommand
 from bbs import create_app
 from exts import db
 from apps.cms import models as cms_module
+<<<<<<< HEAD
 from apps.front import model as front_module
+=======
+from apps.front import model as front_models
+>>>>>>> c1b300fc1343e8c8aaa8be43d3b0e3b8d3759cd2
 
 CmsUser = cms_module.CmsUser
 CmsRole = cms_module.CMSRole
 CmsPermission = cms_module.CMSPermission
+<<<<<<< HEAD
 FrontUser = front_module.FrontUser
+=======
+FrontUser = front_models.FrontUser
+>>>>>>> c1b300fc1343e8c8aaa8be43d3b0e3b8d3759cd2
 
 app = create_app()
 
@@ -81,10 +89,18 @@ def add_user_to_role(email, name):
 @manager.option('-u', '--username',dest="username")
 @manager.option('-p', '--password',dest="password")
 def create_front_user(username, password, telephone):
+<<<<<<< HEAD
     user = FrontUser(user_name=username, password=password, telephone=telephone)
+=======
+    user = FrontUser(username=username, password=password, telephone=telephone)
+>>>>>>> c1b300fc1343e8c8aaa8be43d3b0e3b8d3759cd2
     db.session.add(user)
     db.session.commit()
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c1b300fc1343e8c8aaa8be43d3b0e3b8d3759cd2
 if __name__ == '__main__':
     manager.run()
