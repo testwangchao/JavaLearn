@@ -1,11 +1,6 @@
 from wtforms import Form, StringField, IntegerField
 from wtforms.validators import Email, InputRequired, Length, EqualTo
-
-
-class BaseForm(Form):
-
-    def get_error(self):
-        return self.errors.popitem()[1][0]
+from apps.forms import BaseForm
 
 
 class LoginForm(BaseForm):
