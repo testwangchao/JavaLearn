@@ -19,7 +19,7 @@ $(function () {
         var timestamp = (new Date).getTime();
         var sign = md5(timestamp + telephone + "d1689d3edb0ccd66b852f950e0e73d9b");
         zlajax.post({
-            'url': '/sms_captcha/',
+            'url': '/common/sms_captcha/',
             'data': {
                 'telephone': telephone,
                 'timestamp': timestamp,
