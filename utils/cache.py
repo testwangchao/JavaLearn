@@ -15,5 +15,5 @@ def delete(key):
 
 
 if __name__ == '__main__':
-    set("15201403874", "123456", timeout=1800)
-    print(get('15201403874'))
+    set("15201403878", "123456", timeout=1800)
+    print(get('15201403877'))
