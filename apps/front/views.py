@@ -1,6 +1,9 @@
 from flask.blueprints import Blueprint
-from flask import views, render_template, request, redirect
-from .forms import SignupForm
+from flask import views, render_template, request, redirect, url_for
+from flask import session
+
+from .forms import SignupForm, SigninForm
+from config import FRONT_USER_ID
 from utils import restful
 from .model import FrontUser
 from .model import db
@@ -12,11 +15,6 @@ bp = Blueprint("front", __name__)
 @bp.route('/')
 def index():
     return "front"
-
-
-@bp.route('/test/')
-def test():
-    return render_template('front/front_index.html')
 
 
 class SignupView(views.MethodView):
@@ -42,10 +40,28 @@ class SignupView(views.MethodView):
 
 class SigninView(views.MethodView):
     def get(self):
+        return_to = request.referrer
+        if return_to and return_to != request.url and return_to != url_for('front.signup') and safeutils.is_safe_url(return_to):
+            return render_template('front/front_signin.html', return_to=return_to)
+
         return render_template('front/front_signin.html')
 
     def post(self):
-        pass
+        form = SigninForm(request.form)
+        if form.validate():
+            telephone = form.telephone.data
+            password = form.password.data
+            remember = form.remember.data
+            user = FrontUser.query.filter_by(telephone=telephone).first()
+            if user and user.check_password(password):
+                session[FRONT_USER_ID] = user.id
+                if remember:
+                    session.permanent = True
+                return restful.success()
+            else:
+                return restful.params_error(msg="手机号或密码错误")
+        else:
+            return restful.params_error(msg=form.get_error())
 
 
 bp.add_url_rule('/signup/', view_func=SignupView.as_view('signup'))

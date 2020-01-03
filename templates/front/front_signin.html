@@ -9,6 +9,10 @@
     登录
 {% endblock %}
 
+{% block head %}
+<script src="{{ static('front/js/front_signin.js') }}"></script>
+{% endblock %}
+
 {% block signbox %}
     <div class="form-group">
         <input type="text" class="form-control" name="telephone" placeholder="手机号码">
