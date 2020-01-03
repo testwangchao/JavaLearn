@@ -40,4 +40,13 @@ class SignupView(views.MethodView):
         return restful.params_error(form.get_error())
 
 
+class SigninView(views.MethodView):
+    def get(self):
+        return render_template('front/front_signin.html')
+
+    def post(self):
+        pass
+
+
 bp.add_url_rule('/signup/', view_func=SignupView.as_view('signup'))
+bp.add_url_rule('/signin/', view_func=SigninView.as_view('signin'))

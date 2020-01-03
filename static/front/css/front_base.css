@@ -24,7 +24,7 @@ body {
     text-align: center;
 }
 
-.signup-box {
+.sign-box {
     width: 300px;
     margin: 0 auto;
     padding-top: 50px;
@@ -41,3 +41,6 @@ body {
     cursor: pointer;
 }
 
+a.resetpwd-link {
+    float: right;
+}

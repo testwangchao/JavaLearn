@@ -1,78 +1,56 @@
+{% extends 'front/front_base.html' %}
 {% from 'common/_macros.html' import  static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-</head>
-<title>
+{% block title %}
     注册
-</title>
-<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
-<script src="{{ static('common/zlparam.js') }}"></script>
-<script src="{{ static('front/js/front_signup.js') }}"></script>
-<script src="{{ static(filename='common/sweetalert/xtalert.js') }}"></script>
-<script src="{{ static(filename='common/sweetalert/sweetalert.min.js') }}"></script>
-<link rel="stylesheet" href="{{ static(filename='common/sweetalert/sweetalert.css') }}">
-<script src="{{ static(filename='common/zlajax.js') }}"></script>
-<link rel="stylesheet" href="{{ static('front/css/front_signup.css') }}">
-<body>
-<div class="outer-box">
-    <div class="logo-box">
-        <a href="/">
-            <img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1577630949&di=5e55a96cfb2fd697f9c139ab6a7db42f&src=http://pic.58pic.com/58pic/15/26/28/00758PICJiU_1024.png"
-                 alt="">
-        </a>
-    </div>
-    <h2 class="page-title">
-        注册
-    </h2>
-    <div class="signup-box">
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" name="telephone" placeholder="手机号码">
-                <span class="input-group-btn">
+{% endblock %}
+
+{% block head %}
+    <script src="{{ static('front/js/front_signup.js') }}"></script>
+{% endblock %}
+
+{% block h2_block %}
+    注册
+{% endblock %}
+
+{% block signbox %}
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" name="telephone" placeholder="手机号码">
+            <span class="input-group-btn">
                     <button id="sms-captcha-btn" class="btn btn-default">发送验证码</button>
                 </span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" name="sms_captcha" placeholder="短信验证码">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" name="username" placeholder="用户名">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="password" class="form-control" name="password" placeholder="密码">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="password" class="form-control" name="password2" placeholder="确认密码">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" name="graph_captcha" placeholder="图形验证码">
-                <span class="input-group-addon captcha-addon">
-                    <img id="captcha-img" class="captcha-img" src="{{ url_for('common.graph_captcha') }}" alt="">
-                </span>
-            </div>
-        </div>
-        <div class="form-group">
-            <span style="display: none;" id="return-to-span">{{ return_to }}</span>
-            <button class="btn btn-warning btn-block" id="submit-btn">立即注册</button>
         </div>
     </div>
-</div>
-</body>
-</html>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" name="sms_captcha" placeholder="短信验证码">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" name="username" placeholder="用户名">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="password" class="form-control" name="password" placeholder="密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="password" class="form-control" name="password2" placeholder="确认密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" name="graph_captcha" placeholder="图形验证码">
+            <span class="input-group-addon captcha-addon">
+                    <img id="captcha-img" class="captcha-img" src="{{ url_for('common.graph_captcha') }}" alt="">
+                </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-warning btn-block" id="submit-btn">立即注册</button>
+    </div>
+{% endblock %}
