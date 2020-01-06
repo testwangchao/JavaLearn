@@ -104,10 +104,11 @@ def croles():
 @bp.route('/banners/')
 @login_required
 def banners():
-    return render_template('cms/cms_banners.html')
+    banners = BannerModel.query.filter_by().all()
+    return render_template('cms/cms_banners.html', banners=banners)
 
 
-@bp.route('/abanner', methods=["POST"])
+@bp.route('/abanner/', methods=["POST"])
 @login_required
 def abanner():
     form = AddBanner(request.form)
@@ -121,7 +122,7 @@ def abanner():
         db.session.commit()
         return success()
     else:
-        pass
+        return params_error(form.get_error())
 
 
 @bp.route('/email_captcha/')
