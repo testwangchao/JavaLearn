@@ -1,12 +1,61 @@
 {% extends 'front/front_base.html' %}
+{% from 'common/_macros.html' import static %}
+
 {% block title %}
-BBS论坛
+    BBS论坛
 {% endblock %}
 
 {% block head %}
-
+    <link rel="stylesheet" href="{{ static('front/css/front_index.css') }}">
 {% endblock %}
 
 {% block body %}
+    <div class="lg-container">
+        <div id="carousel-example-generic" class="carousel slide index-banner" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+            </ol>
 
+            <!-- 轮播图s -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a href="#">
+                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/a38b1d56409913d5dc869023ade36d94.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="#">
+                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/718043ed2dacdb7d19c52f8f2f413f12.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="">
+                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/e45bcdea59448cd82360662a331409fc.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="">
+                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/a38b1d56409913d5dc869023ade36d94.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
+                    </a>
+                </div>
+            </div>
+
+            <!-- 左右切换的控制按钮 -->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="sm-container">
+
+    </div>
 {% endblock %}
