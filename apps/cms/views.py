@@ -24,6 +24,7 @@ from exts import mail
 from utils import cache
 from .models import CMSPermission
 from .forms import AddBanner
+from .forms import UpdateBannerForm
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -123,6 +124,42 @@ def abanner():
         return success()
     else:
         return params_error(form.get_error())
+
+
+@bp.route('/ubanner/', methods=["POST"])
+def ubanner():
+    form = UpdateBannerForm(request.form)
+    if form.validate():
+        banner_id = form.banner_id.data
+        name = form.name.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner = BannerModel.query.get(banner_id)
+        if banner:
+            banner.name = name
+            banner.image_url = image_url
+            banner.link_url = link_url
+            banner.priority = priority
+            db.session.commit()
+            return success()
+        else:
+            return params_error(msg="轮播图不存在")
+    else:
+        return params_error(msg=form.get_error())
+
+
+@bp.route('/dbanner/', methods=["POST"])
+def dbanner():
+    banner_id = request.form.get('banner_id')
+    if not banner_id:
+        return params_error("请输入bannerId")
+    banner = BannerModel.query.get(banner_id)
+    if not banner:
+        return params_error("轮播图不存在")
+    db.session.delete(banner)
+    db.session.commit()
+    return success()
 
 
 @bp.route('/email_captcha/')

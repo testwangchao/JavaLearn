@@ -1,5 +1,5 @@
 from wtforms import Form, StringField, IntegerField
-from wtforms.validators import Email, InputRequired, Length, EqualTo
+from wtforms.validators import Email, InputRequired, Length, EqualTo, ValidationError
 from apps.forms import BaseForm
 
 
@@ -25,3 +25,12 @@ class AddBanner(BaseForm):
     image_url = StringField(validators=[InputRequired(message="请输入轮播图图片连接")])
     link_url = StringField(validators=[InputRequired(message="请输入轮播图跳转连接")])
     priority = IntegerField(validators=[InputRequired(message="请输入轮播图优先级")])
+
+    def validate_priority(self, field):
+        priority_number = field.data
+        if float(priority_number) > 100 or float(priority_number) < 0:
+            raise ValidationError(message="权重在0-100之间")
+
+
+class UpdateBannerForm(AddBanner):
+    banner_id = IntegerField(validators=[InputRequired(message="请输入轮播图ID")])
