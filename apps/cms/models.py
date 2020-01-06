@@ -86,3 +86,4 @@ class CmsUser(db.Model):
     def is_developer(self):
         return self.has_permission(CMSPermission.ALL_PERMISSION)
 
+

@@ -20,4 +20,8 @@ class ResetEmailForm(BaseForm):
     emailcaptcha = StringField(validators=[Length(6, 20, message='请输入正确格式的验证码')])
 
 
-
+class AddBanner(BaseForm):
+    name = StringField(validators=[InputRequired(message="请输入轮播图名称")])
+    image_url = StringField(validators=[InputRequired(message="请输入轮播图图片连接")])
+    link_url = StringField(validators=[InputRequired(message="请输入轮播图跳转连接")])
+    priority = IntegerField(validators=[InputRequired(message="请输入轮播图优先级")])

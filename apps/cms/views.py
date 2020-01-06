@@ -15,6 +15,7 @@ from .forms import LoginForm
 from .forms import ResetPwdForm
 from .forms import ResetEmailForm
 from .models import CmsUser
+from ..models import BannerModel
 from .decorators import login_required
 from .decorators import permission_required
 from config import CMS_USER_ID
@@ -22,6 +23,7 @@ from utils.restful import *
 from exts import mail
 from utils import cache
 from .models import CMSPermission
+from .forms import AddBanner
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -103,6 +105,23 @@ def croles():
 @login_required
 def banners():
     return render_template('cms/cms_banners.html')
+
+
+@bp.route('/abanner', methods=["POST"])
+@login_required
+def abanner():
+    form = AddBanner(request.form)
+    if form.validate():
+        name = form.name.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner = BannerModel(name=name, image_url=image_url, link_url=link_url, priority=priority)
+        db.session.add(banner)
+        db.session.commit()
+        return success()
+    else:
+        pass
 
 
 @bp.route('/email_captcha/')
