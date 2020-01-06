@@ -5,7 +5,7 @@
 $(function () {
     $('.nav-sidebar>li>a').click(function (event) {
         var that = $(this);
-        if (that.children('a').attr('href') == '#') {
+        if (that.children('a').attr('href') === '#') {
             event.preventDefault();
         }
         if (that.parent().hasClass('unfold')) {
@@ -57,5 +57,9 @@ $(function () {
     } else if (url.indexOf('comments') >= 0) {
         var commentsManageLi = $('.comments-manage');
         commentsManageLi.addClass('unfold').siblings().removeClass('unfold');
+    } else if (url.indexOf('banners') >= 0) {
+        var cmsBannersManageLi = $('.banner-manage');
+        cmsBannersManageLi.addClass('unfold').siblings().removeClass('unfold');
     }
+
 });

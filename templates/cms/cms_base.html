@@ -5,13 +5,10 @@
 <head>
     <meta charset="UTF-8">
     {% include 'common/_heads.html' %}
-</head>
-<title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" href={{ static(filename='cms/css/base.css') }}>
-<script src="{{ static(filename='cms/js/base.js') }}"></script>
-
-
-{% block head %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href={{ static(filename='cms/css/base.css') }}>
+    <script src="{{ static(filename='cms/js/base.js') }}"></script>
+    {% block head %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -53,6 +50,7 @@
                 </li>
 
                 {% set user_data=g.cms_user %}
+                <li class="nav-group banner-manage"><a href="{{ url_for('cms.banners') }}">轮播图管理</a></li>
                 {% if user_data.has_permission(CMSPermission.POSTER) %}
                     <li class="nav-group post-manage"><a href="{{ url_for('cms.posts') }}">帖子管理</a></li>
                 {% endif %}

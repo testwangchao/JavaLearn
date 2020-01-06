@@ -99,6 +99,12 @@ def croles():
     return render_template('cms/cms_croles.html')
 
 
+@bp.route('/banners/')
+@login_required
+def banners():
+    return render_template('cms/cms_banners.html')
+
+
 @bp.route('/email_captcha/')
 def email_captcha():
     email = request.args.get("email")
