@@ -34,3 +34,12 @@ class AddBanner(BaseForm):
 
 class UpdateBannerForm(AddBanner):
     banner_id = IntegerField(validators=[InputRequired(message="请输入轮播图ID")])
+
+
+class AddBoardForm(BaseForm):
+    name = StringField(validators=[InputRequired(message="请输入版本名称")])
+
+
+class UpdateBoardForm(AddBoardForm):
+    board_id = IntegerField(validators=[InputRequired(message="请输入板块ID")])
+

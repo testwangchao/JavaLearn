@@ -25,6 +25,9 @@ from utils import cache
 from .models import CMSPermission
 from .forms import AddBanner
 from .forms import UpdateBannerForm
+from .forms import AddBoardForm
+from .forms import UpdateBoardForm
+from apps.models import BoardModel
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -78,7 +81,59 @@ def comments():
 @login_required
 @permission_required(CMSPermission.BOARDER)
 def boards():
-    return render_template('cms/cms_boards.html')
+    boards = BoardModel.query.filter_by().all()
+    context = {
+        'boards': boards
+    }
+    return render_template('cms/cms_boards.html', **context)
+
+
+@bp.route('/aboard/', methods=["POST"])
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def aboard():
+    form = AddBoardForm(request.form)
+    if form.validate():
+        name = form.name.data
+        board = BoardModel(name=name)
+        db.session.add(board)
+        db.session.commit()
+        return success()
+    else:
+        return params_error(msg=form.get_error())
+
+
+@bp.route('/uboard/', methods=["POST"])
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def uboard():
+    form = UpdateBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        name = form.name.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            board.name = name
+            db.session.commit()
+            return success()
+        return params_error(msg="板块不存在")
+    else:
+        return params_error(form.get_error())
+
+
+@bp.route('/dboard/')
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def dboard():
+    board_id = request.form.get("board_id")
+    if not board_id:
+        return params_error(msg="请传入板块id")
+    board = BoardModel.query.get(board_id)
+    if not board:
+        return params_error(msg="板块不存在")
+    db.session.delete(board)
+    db.session.commit()
+    return success()
 
 
 @bp.route('/fusers/')

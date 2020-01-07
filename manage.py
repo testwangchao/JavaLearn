@@ -5,6 +5,7 @@ from exts import db
 from apps.cms import models as cms_module
 from apps.front import model as front_module
 from apps.models import BannerModel
+from apps.models import BoardModel
 
 CmsUser = cms_module.CmsUser
 CmsRole = cms_module.CMSRole
