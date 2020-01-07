@@ -17,31 +17,19 @@
                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                 <li data-target="#carousel-example-generic" data-slide-to="1"></li>
                 <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
             </ol>
 
             <!-- 轮播图s -->
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <a href="#">
-                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/a38b1d56409913d5dc869023ade36d94.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
-                    </a>
-                </div>
-                <div class="item">
-                    <a href="#">
-                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/718043ed2dacdb7d19c52f8f2f413f12.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
-                    </a>
-                </div>
-                <div class="item">
-                    <a href="">
-                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/e45bcdea59448cd82360662a331409fc.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
-                    </a>
-                </div>
-                <div class="item">
-                    <a href="">
-                        <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/a38b1d56409913d5dc869023ade36d94.jpg?thumb=1&w=1533&h=575&f=webp&q=90" alt="...">
-                    </a>
-                </div>
+                {% for banner in banners %}
+                    {% if loop.first %}
+                        <div class="item active">
+                    {% else %}
+                        <div class="item">
+                    {% endif %} 
+                        <a href="{{ banner.link_url }}"><img src="{{ banner.image_url }}" alt="..."></a>
+                    </div>
+                {% endfor %}
             </div>
 
             <!-- 左右切换的控制按钮 -->
