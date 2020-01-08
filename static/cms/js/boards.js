@@ -22,3 +22,61 @@ $(function () {
         })
     })
 });
+
+$(function () {
+    $(".edit-board-btn").click(function () {
+        var self = $(this);
+        var tr = self.parent().parent();
+        var name = tr.attr('data-name');
+        var board_id = tr.attr('data-id');
+
+        xtalert.alertOneInput({
+            'text': '请输入新板块名称',
+            'placeholder': '板块名称',
+            'confirmCallback': function (inputValue) {
+                zlajax.post({
+                    'url': '/cms/uboard/',
+                    'data': {
+                        'board_id': board_id,
+                        'name': inputValue
+                    },
+                    'success': function (data) {
+                        if (data['code'] === 200){
+                            window.location.reload()
+                        } else {
+                            xtalert.alertInfo(data['msg'])
+                        }
+                    }
+                })
+            }
+        })
+    })
+});
+
+$(function () {
+    $(".delete-board-btn").click(function () {
+         var self = $(this);
+        var tr = self.parent().parent();
+        var board_id = tr.attr('data-id');
+
+        xtalert.alertConfirm({
+            'msg': "确定删除？",
+            'confirmCallback': function () {
+                zlajax.post({
+                    'url': '/cms/dboard/',
+                    'data': {
+                        'board_id': board_id
+                    },
+                    'success': function (data) {
+                        if (data['code'] === 200){
+                            window.location.reload();
+                        } else {
+                            xtalert.alertInfo(data['msg'])
+                        }
+                    }
+                })
+            }
+        })
+    })
+});
+

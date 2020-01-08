@@ -121,7 +121,7 @@ def uboard():
         return params_error(form.get_error())
 
 
-@bp.route('/dboard/')
+@bp.route('/dboard/', methods=["POST"])
 @login_required
 @permission_required(CMSPermission.BOARDER)
 def dboard():
