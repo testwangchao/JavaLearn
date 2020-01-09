@@ -5,6 +5,7 @@ from config import CMS_USER_ID
 from .models import CmsUser
 from flask import g
 
+
 def login_required(func):
     @wraps(func)
     def inner(*args, **kwargs):
