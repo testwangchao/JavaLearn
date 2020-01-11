@@ -1,6 +1,6 @@
 from flask.blueprints import Blueprint
 from flask import views, render_template, request, redirect, url_for
-from flask import session
+from flask import session, g
 
 from .forms import SignupForm, SigninForm, AddPostForm
 from config import FRONT_USER_ID
@@ -20,9 +20,11 @@ bp = Blueprint("front", __name__)
 def index():
     banners = BannerModel.query.order_by(BannerModel.priority.desc()).limit(3)
     boards = BoardModel.query.all()
+    posts = PostModel.query.all()
     context = {
         'banners': banners,
-        'boards': boards
+        'boards': boards,
+        'posts': posts
     }
     return render_template('front/front_index.html', **context)
 
@@ -45,6 +47,7 @@ def apost():
         if not board:
             return restful.params_error("板块不存在")
         post = PostModel(title=title, content=content, board_id=board_id)
+        post.author = g.front_user
         db.session.add(post)
         db.session.commit()
         return restful.success()

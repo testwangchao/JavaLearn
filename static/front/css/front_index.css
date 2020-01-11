@@ -1,4 +1,70 @@
-.index-banner {
+.index-banner{  /* 圆角，超出的隐藏 */
     border-radius: 10px;
     overflow: hidden;
+    height: 200px; /*轮播图盒子高度*/
+}
+.index-banner img{ /* 轮播图盒子下的图片高度 */
+    height: 200px;
+}
+
+.post-group{
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 5px; /* 圆角 */
+    padding: 10px;
+}
+.post-group-head{
+    overflow: hidden;
+    list-style: none;
+}
+
+.post-group-head li{
+    float: left;
+    padding: 5px 10px;
+}
+
+.post-group-head li a{
+    color:#333;
+}
+
+.post-group-head li.active{
+    background: #ccc;  /* 选中状态 */
+}
+
+.post-list-group{
+    margin-top: 20px;
+}
+
+.post-list-group li{
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
+.author-avator-group{
+    float: left;
+}
+
+.author-avator-group img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.post-info-group{
+    float: left;
+    margin-left: 10px;
+    border-bottom: 1px solid #e6e6e6;
+    width: 85%;
+    padding-bottom: 10px;
+}
+
+.post-info-group .post-info{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #8c8c8c;
+}
+
+.post-info span{
+    margin-right: 10px;
 }
