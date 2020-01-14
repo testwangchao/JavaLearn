@@ -30,3 +30,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 CMS_USER_ID = 'wangchao'
 FRONT_USER_ID = "front"
+
+
+# flask-pagination配置
+PER_PAGE = 10

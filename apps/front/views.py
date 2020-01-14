@@ -1,9 +1,10 @@
 from flask.blueprints import Blueprint
 from flask import views, render_template, request, redirect, url_for
 from flask import session, g
+from flask_paginate import Pagination, get_page_parameter
 
 from .forms import SignupForm, SigninForm, AddPostForm
-from config import FRONT_USER_ID
+from config import FRONT_USER_ID, PER_PAGE
 from utils import restful
 from .model import FrontUser
 from .model import db
@@ -20,11 +21,17 @@ bp = Blueprint("front", __name__)
 def index():
     banners = BannerModel.query.order_by(BannerModel.priority.desc()).limit(3)
     boards = BoardModel.query.all()
-    posts = PostModel.query.all()
+    # 获取当前页
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    start = (page-1)*PER_PAGE
+    end = start + PER_PAGE
+    posts = PostModel.query.slice(start, end)
+    pagination = Pagination(bs_version=3, page=page, total=PostModel.query.count())
     context = {
         'banners': banners,
         'boards': boards,
-        'posts': posts
+        'posts': posts,
+        'pagination': pagination
     }
     return render_template('front/front_index.html', **context)
 

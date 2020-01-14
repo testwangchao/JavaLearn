@@ -6,6 +6,7 @@ from apps.cms import models as cms_module
 from apps.front import model as front_module
 from apps.models import BannerModel
 from apps.models import BoardModel
+from apps.models import PostModel
 
 CmsUser = cms_module.CmsUser
 CmsRole = cms_module.CMSRole
@@ -86,6 +87,21 @@ def create_front_user(username, password, telephone):
     user = FrontUser(user_name=username, password=password, telephone=telephone)
     db.session.add(user)
     db.session.commit()
+
+
+@manager.command
+def create_test_post():
+    for i in range(1, 200):
+        title = "测试%s" % i
+        content = "内容%s" % i
+        board = BoardModel.query.first()
+        author = FrontUser.query.first()
+        post = PostModel(title=title, content=content)
+        post.board = board
+        post.author = author
+        db.session.add(post)
+        db.session.commit()
+    print("success")
 
 
 if __name__ == '__main__':

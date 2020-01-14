@@ -53,7 +53,8 @@
                     {% for post in posts %}
                         <li>
                             <div class="author-avator-group">
-                                <img src="{{ post.author.avator or url_for('static',filename='common/images/logo.png') }}" alt="">
+                                <img src="{{ post.author.avator or url_for('static',filename='common/images/logo.png') }}"
+                                     alt="">
                             </div>
                             <div class="post-info-group">
                                 <p class="post-title">{{ post.title }}</p>
@@ -67,6 +68,9 @@
                         </li>
                     {% endfor %}
                 </ul>
+                <div style="text-align: center">
+                    {{ pagination.links }}
+                </div>
             </div>
         </div>
         <div class="sm-container">
